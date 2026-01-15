@@ -16,52 +16,87 @@
 
 ### github actions部署方式
 
-1.**fork该仓库**
+1. **fork该仓库**
 
-2.**修改config.json**：这个仿照之前的方式进行修改即可，但是注意，username和password请留空或者随便填以防止泄漏个人账号密码。（具体的需要填写在自己repo的settings中）。时间什么也是需要修改（修改到仓库中）不要忘记。
+![](img/image-20260115151033660.png)
 
-3.**配置账号密码**：在settings->secrets and variables->Repository secrets 创建两个secret keys。名称分别为USERNAMES，PASSWORDS，填写自己的账号和密码即可。（如果有多个用户，请使用,(英文逗号)隔开，如果密码中有逗号可能会出现问题）。
+![](img/image-20260115151108847.png)
+
+2. **修改config.json**
+
+![](img/image-20260115151209157.png)
+
+![](img/image-20260115151351877.png)
+
+roomid参照下表
 
 ```
-xxxxxxx,xxxxxxx
+仓山-一楼-大厅 3916
+仓山-二楼-综合书库 3919
+仓山-三楼-阅览厅 3923
+旗山-一楼-24小时书房 4036
+旗山-二楼-知明学习室 3929
+旗山-二楼-行笃学习室 6425
+旗山-三楼-立诚学习室 4019
+旗山-三楼-过道阅览区 3928
+旗山-三楼-致广学习室 6061
+旗山-四楼-中文图书厅库 3927
+旗山-五楼-中文图书厅库 3926
+旗山-六楼-过道阅览室 12596
+旗山-七楼-中外文图书厅库 3925
+仓山-四楼-中文图书样本库 3924
+协和学院图书馆-一楼-数字阅读区 12041
+协和学院图书馆-一楼-一楼休闲阅读区 12042
+协和学院图书馆-一楼-一楼自习一区 12043
+协和学院图书馆-一楼-一楼自习二区 12044
+协和学院图书馆-一楼-一楼卡座 12045
+协和学院图书馆-二楼-二楼第四书库 12046
+协和学院图书馆-二楼-二楼第五书库 12047
+协和学院图书馆-二楼-二楼学生阅读厅 12048
+协和学院图书馆-二楼-二楼中厅 12049
+协和学院图书馆-三楼-三楼第一书库 12050
+协和学院图书馆-三楼-三楼第三书库 12051
+协和学院图书馆-三楼-三楼中厅 12052
 ```
 
-4.**运行action**：在action -> auto_reserve -> run workflows 选择main分支即可。
+例如图中是`3925`，即`旗山-七楼-中外文图书厅库`
 
+![](img/image-20260115151548461.png)
 
-## config配置
-之后编辑config.json并填写座位预约相关信息即可
-```json
-{
-    "reserve": [
-        {"username": "XXXXXXXX", //https://passport2.chaoxing.com/mlogin?loginType=1&newversion=true&fid=&  在这个网站查看是否可以顺利登陆 
-        "password": "XXXXXXXX",
-        "time": ["08:00","22:00"], // 预约的起始时间
-        "roomid":"2609", //2609:四楼外圈,5483:四楼内圈,2610:五楼外圈,5484:五楼内圈
-        "seatid":"002", // 注意要用0补全至3位数，例如6号座位应该填006
-        "daysofweek": ["Monday" , "Tuesday", "Wednesday", "Thursday", "Friday"]
-        },
-        {"username": "xxxxxxxxxx",
-        "password": "xxxxxxxxx",
-        "time": ["20:00","21:00"],
-        "roomid":"5483",
-        "seatid":["056"],
-        "daysofweek": ["Saturday" , "Sunday"]
-    }
-}
-```
-参考前面的运行方式即可。
+座位号`seatid`和app里的一样，星期`daysofweek`和具体时间`time`也自己选，然后保存即可
 
+![](img/image-20260115151637542.png)
 
-## 高级设置
+username和password请留空或者随便填，以防止泄漏个人账号密码。
 
-在main.py中有四个参数可以选择
+3. **配置账号密码**
 
-```python
-SLEEPTIME = 0.2 # 每次抢座的间隔
-ENDTIME = "07:01:00" # 根据学校的开始预约座位时间+1min即可
+在settings->secrets and variables->Repository secrets 创建两个secret keys。名称分别为`USERNAMES`，`PASSWORDS`，填写自己的账号和密码即可。
 
-ENABLE_SLIDER = False # 是否有滑块验证，设置为True开启滑块验证
-MAX_ATTEMPT = 4 # 最大尝试次数
-```
-可以直接进行修改，但是不建议把**SLEEPTIME**设置太小。
+![](img/image-20260115151936635.png)
+
+![](img/image-20260115152020963.png)
+
+![](img/image-20260115152054352.png)
+
+![](img/image-20260115152206785.png)
+
+变成这样即可
+
+![](img/image-20260115152253861.png)
+
+在这个网站查看是否可以顺利登陆，检验账号密码是否正确 https://passport2.chaoxing.com/mlogin?loginType=1&newversion=true&fid=&  
+
+4. **运行action**
+
+在action -> auto_reserve -> run workflows 选择main分支即可
+
+![](img/image-20260115152813801.png)
+
+![](img/image-20260115152838181.png)
+
+![](img/image-20260115152859464.png)
+
+## 后记
+
+我才发现富士达的图书馆可以提前两天预约，所以根本没必要（哭
